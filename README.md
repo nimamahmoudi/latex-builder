@@ -4,5 +4,5 @@
 
 ## References
 
-- [CSS Tricks: drag and rop uplading](https://css-tricks.com/drag-and-drop-file-uploading/)
+- [CSS Tricks: drag and drop file uploading](https://css-tricks.com/drag-and-drop-file-uploading/)
 - [Stackoverflow: executing shell in nodejs](https://stackabuse.com/executing-shell-commands-with-node-js/)
