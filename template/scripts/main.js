@@ -1,6 +1,8 @@
+"use strict";
+
 var uploadbox = document.getElementById("drop-file-area");
 
-$fileInput = $("#file-input")
+var $fileInput = $("#file-input")
 
 // Prevent Default overlay behaviour
 $("drop-file-overlay").on('drag dragstart dragend dragover dragenter dragleave drop', function (e) {
