@@ -1,43 +1,8 @@
-<!DOCTYPE html>
-<html>
+{{#> layouts/default }}
 
-<head>
-  <meta charset='utf-8'>
-  <meta http-equiv='X-UA-Compatible' content='IE=edge'>
-  <title>Latex Builder</title>
-  <meta name='viewport' content='width=device-width, initial-scale=1'>
-  <link rel='stylesheet' type='text/css' media='screen' href='styles/main.css'>
-  <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,700&display=swap" rel="stylesheet" />
-</head>
-
-<body>
-  <nav class="navbar">
-    <ul class="navbar-nav">
-      <li class="logo">
-        <a href="#" class="nav-link">
-          <span class="link-text logo-text">Latex Builder</span>
-        </a>
-      </li>
-      <li class="nav-item">
-        <a href="./" class="nav-link">
-          Home
-        </a>
-      </li>
-      <li class="nav-item">
-        <a href="#" class="nav-link">
-          Settings
-        </a>
-      </li>
-      <li class="nav-item">
-        <a href="#" class="nav-link">
-          About
-        </a>
-      </li>
-    </ul>
-  </nav>
-
-  <main class="build-main">
-    <pre class="build-output">
+{{#*inline "content-block"}}
+<main class="build-main">
+  <pre class="build-output">
 travis_fold:start:worker_info
 [0K[33;1mWorker information[0m
 hostname: df427651-62fd-46e6-9c37-d7d3aef5540a@1.worker-com-6cf44f8696-g2fjw.gce-production-2
@@ -191,11 +156,11 @@ v8.12.0
 v8.15.1
 v8.9
     </pre>
-  </main>
+</main>
+{{/inline}}
 
-  <script src="https://code.jquery.com/jquery-3.5.0.js" integrity="sha256-r/AaFHrszJtwpe+tHyNi/XCfMxYpbsRg2Uqn0x3s2zc="
-    crossorigin="anonymous"></script>
-  <script src='scripts/logs.js'></script>
-</body>
+{{#*inline "footer-block"}}
+<script src='scripts/logs.js'></script>
+{{/inline}}
 
-</html>
+{{/layouts/default}}

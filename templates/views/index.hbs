@@ -1,0 +1,27 @@
+{{#> layouts/default }}
+
+{{#*inline "content-block"}}
+<main>
+  <div id="site-title">
+    <h1>{{>page/title}}</h1>
+  </div>
+  <form class="box" method="post" action="" enctype="multipart/form-data">
+    <div id="drop-file-area">
+      <button id="select-file-text">Select or drop a zip file</button>
+      <input id="file-input" class="box__file hiddenfile" type="file" name="files[]" id="file"
+        data-multiple-caption="{count} files selected" multiple />
+      <div class="box__uploading">Uploading&hellip;</div>
+      <div class="box__success">Done!</div>
+      <div class="box__error">Error!</div>
+      <div id="drop-file-overlay">&nbsp;</div>
+    </div>
+  </form>
+</main>
+{{/inline}}
+
+{{#*inline "footer-block"}}
+<script src='scripts/main.js'></script>
+{{/inline}}
+
+
+{{/layouts/default}}

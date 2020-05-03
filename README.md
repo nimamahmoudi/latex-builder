@@ -7,3 +7,4 @@
 - [CSS Tricks: drag and drop file uploading](https://css-tricks.com/drag-and-drop-file-uploading/)
 - [Stackoverflow: executing shell in nodejs](https://stackabuse.com/executing-shell-commands-with-node-js/)
 - [Fireshipio: Responsive Nav CSS](https://github.com/fireship-io/222-responsive-icon-nav-css)
+- [CSS Tricks: old timey terminal styling](https://css-tricks.com/old-timey-terminal-styling/)
