@@ -207,3 +207,33 @@ main {
     height: 0px;
     overflow: hidden;
 }
+
+.build-output {
+    background-color: black;
+    color: white;
+    margin-bottom: 0;
+    overflow-y: visible;
+    overflow-x: scroll;
+    margin-top: 0;
+    min-height: calc(100vh - var(--navbar-size) - 2rem);
+    width: calc(100vw - 2rem - 4px);
+    padding: 1rem 1rem 1rem 1rem;
+    text-shadow: 0 0 5px #C8C8C8;
+}
+
+.build-output::-webkit-scrollbar {
+    width: 0.25rem;
+}
+
+.build-output::-webkit-scrollbar-track {
+    background: #1e1e24;
+}
+
+.build-output::-webkit-scrollbar-thumb {
+    background: #6649b8;
+}
+
+main.build-main{
+    padding: 0 0 0 0;
+    max-width: 100vw;
+}
