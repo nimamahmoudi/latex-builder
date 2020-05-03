@@ -43,6 +43,7 @@ $fileInput.on('change', function (e) {
 });
 
 $form.on('submit', function (e) {
+  e.preventDefault();
   if ($form.hasClass('is-uploading')) return false;
 
   $form.addClass('is-uploading').removeClass('is-error');
@@ -59,26 +60,28 @@ $form.on('submit', function (e) {
   }
 
   console.log('Ajax Upload!')
-  e.preventDefault()
 
-  // $.ajax({
-  //   url: $form.attr('action'),
-  //   type: $form.attr('method'),
-  //   data: ajaxData,
-  //   dataType: 'json',
-  //   cache: false,
-  //   contentType: false,
-  //   processData: false,
-  //   complete: function () {
-  //     $form.removeClass('is-uploading');
-  //   },
-  //   success: function (data) {
-  //     $form.addClass(data.success == true ? 'is-success' : 'is-error');
-  //     if (!data.success) $errorMsg.text(data.error);
-  //   },
-  //   error: function () {
-  //     // Log the error, show an alert, whatever works for you
-  //   }
-  // });
+  $.ajax({
+    url: $form.attr('action'),
+    type: $form.attr('method'),
+    data: ajaxData,
+    dataType: 'json',
+    cache: false,
+    contentType: false,
+    processData: false,
+    complete: function () {
+      $form.removeClass('is-uploading');
+    },
+    success: function (data) {
+      $form.addClass(data.success == true ? 'is-success' : 'is-error');
+      // if (!data.success) $errorMsg.text(data.error);
+      console.log(data.error)
+      console.log(data)
+    },
+    error: function (xhr, status, error) {
+      // Log the error, show an alert, whatever works for you
+      $form.addClass('is-error');
+    }
+  });
   
 });
