@@ -71,6 +71,22 @@ const buildFile = async (fileId, io) => {
     delete activeBuilds[fileId]
 }
 
+router.get('/download/:id/:file', async (req, res) => {
+    // TODO: check if a valid file name (without path into root dir)
+    let filename = req.params.file
+
+    if (!filename.match(/^[\w.\- ]+\.(docx|pdf)$/)) {
+        res.status(400).send("Bad file name format")
+    }
+
+    let path = tmpStorageFolder + req.params.id + '/output/' + filename;
+    if (fs.existsSync(path)) { //file exists
+        fs.createReadStream(path).pipe(res);
+    } else {
+        res.status(404).send("File not found!")
+    }
+})
+
 router.get('/logs/:id', async (req, res) => {
     let fileId = req.params.id
     let io = req.app.io
