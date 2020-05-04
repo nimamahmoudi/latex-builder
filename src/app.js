@@ -1,10 +1,21 @@
 const path = require('path')
+const http = require('http')
 const express = require('express')
 const hbs = require('hbs')
+const socketio = require('socket.io')
 
 const util = require('./util')
 
 const app  = express()
+const server = http.createServer(app)
+const io = socketio(server)
+// so that we can access io from req.app.io
+app.io = io;
+
+io.on('connection', (socket) => {
+    console.log("new websocket connection")
+})
+
 const port = process.env.PORT || 3000
 
 // Setup Handelbard engine and folder
@@ -46,6 +57,6 @@ app.get('*', (req, res) => {
     })
 })
 
-app.listen(port, () => {
+server.listen(port, () => {
     console.log('Server is up on port ' + port + '.')
 })
