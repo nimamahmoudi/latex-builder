@@ -43,4 +43,7 @@ echo "================================================"
 printf "output structure:\n"
 tree
 
+cd ../
+rm -r content
+
 printf "\n\n"
