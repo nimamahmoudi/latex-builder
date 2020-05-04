@@ -26,17 +26,17 @@ build_docx()
     printf "Building $FOLDER/${FILE_PATH}.docx finished.\n\n"
 }
 
-cd $2
+cd $2 || exit
 rm -r content 2>/dev/null
 rm -r output 2>/dev/null
-unzip -qq upload.zip -d content
+unzip -qq upload.zip -d content || exit
 
-cd content
+cd content || exit
 printf "\n\ncontent structure:\n"
 tree
 
 # build docx
-build_docx . main bibliography ieee.csl
+build_docx . main bibliography ieee.csl || exit
 
 cd ../output
 echo "================================================"

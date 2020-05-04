@@ -31,7 +31,8 @@ COPY . .
 # expose port 3000
 EXPOSE 3000
 
-# create tmp folder
-RUN mkdir -p tmp
+ENV JWTSECRET=${JWTSECRET:-"nJky3Fg9GdfLVyWNZJqpPk7nA5eBnrs5"}
+ENV SESSIONSECRET=${SESSIONSECRET:-"cUYV6G25L7Msa64z8P7YLQkCH9U3X6Bu"}
+ENV TMPFOLDER=${TMPFOLDER:-"/tmp/"}
 
-CMD [ "node", "src/app.js" ]
+CMD [ "bash", "entrypoint.sh" ]
