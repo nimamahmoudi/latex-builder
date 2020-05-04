@@ -7,11 +7,25 @@ socket.on(fileId, (data) => {
     updateScroll()
 })
 
+socket.on(fileId + '/dump', (data) => {
+    $output.text(data)
+    scrollToEnd()
+})
+
+socket.emit('ready', fileId)
+
+
+// Scroll functionality
 var scrolled = false;
+
+function scrollToEnd() {
+    var element = document.querySelector("body")
+    window.scrollTo(0, element.scrollHeight)
+}
+
 function updateScroll() {
     if (!scrolled) {
-        var element = document.querySelector("body")
-        window.scrollTo(0, element.scrollHeight)
+        scrollToEnd()
     }
 }
 
@@ -22,7 +36,7 @@ function getScroll(query) {
 }
 
 $(window).scroll(function () {
-    if (Math.abs($(window).scrollTop() + $(window).height() - $(document).height()) < 50) {
+    if (Math.abs($(window).scrollTop() + $(window).height() - $(document).height()) < 100) {
         scrolled = false;
     } else {
         scrolled = true;

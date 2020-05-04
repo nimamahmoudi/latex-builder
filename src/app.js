@@ -12,10 +12,6 @@ const io = socketio(server)
 // so that we can access io from req.app.io
 app.io = io;
 
-io.on('connection', (socket) => {
-    console.log("new websocket connection")
-})
-
 const port = process.env.PORT || 3000
 
 // Setup Handelbard engine and folder
@@ -47,7 +43,7 @@ app.use(cors())
 // Setup Routers
 const indexRouter = require('./routers/index')
 app.use(indexRouter)
-const buildRouter = require('./routers/build')
+const buildRouter = require('./routers/build')(app)
 app.use(buildRouter)
 
 // 404 Page
