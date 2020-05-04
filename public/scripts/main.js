@@ -22,6 +22,7 @@ $("#select-file-text").on('drag dragstart dragend dragover dragenter dragleave d
 // for drop behaviour
 var $form = $("form");
 var droppedFiles = false;
+var $errorMsg = $(".box__error");
 
 $form.on('drag dragstart dragend dragover dragenter dragleave drop', function (e) {
   e.preventDefault();
@@ -74,13 +75,18 @@ $form.on('submit', function (e) {
     },
     success: function (data) {
       $form.addClass(data.success == true ? 'is-success' : 'is-error');
-      // if (!data.success) $errorMsg.text(data.error);
-      console.log(data.error)
+
+      if (!data.success) $errorMsg.text(data.message);
+
       console.log(data)
     },
     error: function (xhr, status, error) {
       // Log the error, show an alert, whatever works for you
       $form.addClass('is-error');
+      let data = JSON.parse(xhr.responseText);
+      if (data.message) {
+        $errorMsg.text(data.message);
+      }
     }
   });
   
