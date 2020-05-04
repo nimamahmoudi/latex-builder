@@ -4,6 +4,9 @@ const fs = require('fs')
 const util = require('../util')
 const tmpStorageFolder = util.TMPSTORAGEFOLDER
 
+// build functionality imports
+const { spawn } = require("child_process")
+
 var app;
 var io;
 const activeBuilds = {};
@@ -26,6 +29,32 @@ initializeUsingApp = (_app) => {
     })
 }
 
+const buildProcess = function(fileId, sendLogToClient) {
+    let folderPath = tmpStorageFolder + fileId + '/';
+    // let filePath = folderPath + "upload.zip"
+
+    const ret = new Promise((resolve, reject) => {
+        // const buildSpawn = spawn("bash", ["src/build.sh", fileId])
+        const buildSpawn = spawn("bash", ["build.sh", fileId, folderPath])
+        buildSpawn.stdout.on("data", (data) => {
+            sendLogToClient(data.toString())
+        });
+        buildSpawn.stderr.on("data", data => {
+            console.log(`stderr: ${data}`);
+            sendLogToClient(data.toString())
+        });
+        buildSpawn.on('error', (error) => {
+            console.log(`error: ${error.message}`);
+        });
+        buildSpawn.on("close", code => {
+            sendLogToClient(`child process exited with code ${code}`)
+            resolve()
+        });
+    })
+
+    return ret
+}
+
 const buildFile = async (fileId, io) => {
     var totalLogs = ""
     activeBuilds[fileId] = totalLogs
@@ -35,15 +64,9 @@ const buildFile = async (fileId, io) => {
         io.emit(fileId, newLog)
     }
 
-    let folderPath = tmpStorageFolder + fileId + '/';
-    let filePath = folderPath + "upload.zip"
-
     sendLogToClient("Build started for: " + fileId + '\n\n')
 
-    for (let i = 0; i < 200; i++) {
-        sendLogToClient(`${i}\n`)
-        await util.sleep(100)
-    }
+    await buildProcess(fileId, sendLogToClient)
 
     sendLogToClient('\n\n' + 'Build done!' + '\n\n')
     delete activeBuilds[fileId]
