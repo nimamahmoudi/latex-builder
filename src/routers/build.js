@@ -16,7 +16,8 @@ const tmpUserStorage = multer.diskStorage({
         cb(null, dir)
     },
     filename: function (req, file, cb) {
-        cb(null, file.originalname)
+        // cb(null, file.originalname)
+        cb(null, 'upload.zip')
     }
 })
 
@@ -54,7 +55,10 @@ router.get('/', async (req, res) => {
     })
 })
 
-router.get('/logs', async (req, res) => {
+router.get('/logs/:id', async (req, res) => {
+    let folderPath = tmpStorageFolder + req.params.id + '/';
+    let filePath = folderPath + "upload.zip"
+    console.log(filePath)
     res.render('logs', {
         title: 'Building...',
     })

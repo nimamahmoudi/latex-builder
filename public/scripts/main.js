@@ -78,7 +78,7 @@ $form.on('submit', function (e) {
 
       if (!data.success) $errorMsg.text(data.message);
 
-      console.log(data)
+      if (data.success) window.location.replace('/logs/' + data.folderName)
     },
     error: function (xhr, status, error) {
       // Log the error, show an alert, whatever works for you
