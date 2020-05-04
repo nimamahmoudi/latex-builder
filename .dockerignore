@@ -1,0 +1,12 @@
+node_modules
+uploads
+tmp
+README.md
+npm-debug.log
+.git
+.gitattributes
+.gitignore
+Dockerfile
+dockername
+docker-build-push.sh
+.dockerignore
