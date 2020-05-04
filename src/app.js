@@ -34,6 +34,8 @@ const cors = require('cors')
 app.use(cors())
 
 // Setup Routers
+const indexRouter = require('./routers/index')
+app.use(indexRouter)
 const buildRouter = require('./routers/build')
 app.use(buildRouter)
 
