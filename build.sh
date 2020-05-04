@@ -28,6 +28,7 @@ build_docx()
 
 cd $2
 rm -r content 2>/dev/null
+rm -r output 2>/dev/null
 unzip -qq upload.zip -d content
 
 cd content
