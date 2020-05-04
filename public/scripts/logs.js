@@ -12,6 +12,19 @@ socket.on(fileId + '/dump', (data) => {
     scrollToEnd()
 })
 
+socket.on(fileId + '/download', (data) => {
+    console.log("download:", data)
+
+    var win = window.open(data);
+    if (win) {
+        //Browser has allowed it to be opened
+        win.focus();
+    } else {
+        //Browser has blocked it
+        alert('Please allow popups for this website');
+    }
+})
+
 socket.emit('ready', fileId)
 
 

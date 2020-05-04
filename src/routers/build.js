@@ -55,7 +55,8 @@ const buildProcess = function(fileId, sendLogToClient) {
 }
 
 const buildFile = async (fileId, io) => {
-    var totalLogs = ""
+    let outputPath = tmpStorageFolder + fileId + '/output/';
+    let totalLogs = ""
     activeBuilds[fileId] = totalLogs
     sendLogToClient = (newLog) => {
         totalLogs += newLog
@@ -68,6 +69,14 @@ const buildFile = async (fileId, io) => {
     await buildProcess(fileId, sendLogToClient)
 
     sendLogToClient('\n\n' + 'Build done!' + '\n\n')
+
+    // send download addresses back to client
+    filenames = fs.readdirSync(outputPath)
+    filenames.forEach((name) => {
+        link = "/download/" + fileId + "/" + name
+        io.emit(fileId + "/download", link)
+    })
+
     delete activeBuilds[fileId]
 }
 
