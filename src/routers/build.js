@@ -11,8 +11,9 @@ const buildFile = async (fileId, io) => {
 
     io.emit(fileId, "Build started for: " + fileId + '\n\n')
 
-    for (let i = 0; i < 10; i++) {
+    for (let i = 0; i < 1000; i++) {
         io.emit(fileId, `${i}\n`)
+        await util.sleep(100)
     }
 
     io.emit(fileId, '\n\n' + 'Build done!' + '\n\n')
