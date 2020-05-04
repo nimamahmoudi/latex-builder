@@ -40,7 +40,6 @@ const buildProcess = function(fileId, sendLogToClient) {
             sendLogToClient(data.toString())
         });
         buildSpawn.stderr.on("data", data => {
-            console.log(`stderr: ${data}`);
             sendLogToClient(data.toString())
         });
         buildSpawn.on('error', (error) => {
