@@ -2,6 +2,20 @@
 
  A simple UI that can be used to build latex files and convert them using pandoc.
 
+## Getting Started
+
+To run the server, you can use the following command:
+
+```sh
+docker run -d -p 3000:3000 --name latex-builder --restart always nimamahmoudi/latex-builder
+```
+
+In case you want to put the server behind a reverse proxy:
+
+```sh
+docker run -it -p 127.0.0.1:3000:3000 nimamahmoudi/latex-builder
+```
+
 ## References
 
 - [CSS Tricks: drag and drop file uploading](https://css-tricks.com/drag-and-drop-file-uploading/)
