@@ -7,6 +7,8 @@ const tmpStorageFolder = util.TMPSTORAGEFOLDER
 // build functionality imports
 const { spawn } = require("child_process")
 
+const userFileUpload = util.userFileUpload
+
 var app;
 var io;
 const activeBuilds = {};
@@ -104,7 +106,6 @@ const buildFile = async (fileId, io) => {
 }
 
 router.get('/download/:id/:file', async (req, res) => {
-    // TODO: check if a valid file name (without path into root dir)
     let filename = req.params.file
 
     if (!filename.match(/^[\w.\- ]+\.(docx|pdf)$/)) {
@@ -112,6 +113,27 @@ router.get('/download/:id/:file', async (req, res) => {
     }
 
     let path = tmpStorageFolder + req.params.id + '/output/' + filename;
+    if (fs.existsSync(path)) { //file exists
+        fs.createReadStream(path).pipe(res);
+    } else {
+        res.status(404).send("File not found!")
+    }
+})
+
+router.post('/sync/upload/:file', userFileUpload.single('file'), async (req, res) => {
+    // check output file name
+    let filename = req.params.file
+    if (!filename.match(/^[\w.\- ]+\.(docx|pdf)$/)) {
+        res.status(400).send("Bad file name format")
+    }
+
+    // build uploaded file
+    const fileId = req.randomFolder
+    let io = req.app.io
+    await buildFile(fileId, io)
+
+    // return the generated file to user
+    let path = tmpStorageFolder + fileId + '/output/' + filename;
     if (fs.existsSync(path)) { //file exists
         fs.createReadStream(path).pipe(res);
     } else {
