@@ -55,6 +55,11 @@ const buildProcess = function(fileId, sendLogToClient) {
 }
 
 const buildFile = async (fileId, io) => {
+    // if an active build exists
+    if (activeBuilds.hasOwnProperty(fileId)) {
+        return
+    }
+
     let folderPath = tmpStorageFolder + fileId + '/';
     let outputPath = tmpStorageFolder + fileId + '/output/';
     let totalLogs = ""
@@ -117,6 +122,8 @@ router.get('/download/:id/:file', async (req, res) => {
 router.get('/logs/:id', async (req, res) => {
     let fileId = req.params.id
     let io = req.app.io
+
+    buildFile(fileId, io)
 
     res.render('logs', {
         title: 'Building...',
