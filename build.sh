@@ -38,7 +38,7 @@ tree
 # build docx
 build_docx . main bibliography ieee.csl || exit
 
-cd ../output
+cd ../output || exit
 echo "================================================"
 printf "output structure:\n"
 tree
