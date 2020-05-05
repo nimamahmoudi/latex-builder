@@ -22,6 +22,16 @@ Or to update the image and run it again, or as something done as a cronjob:
 docker rm -f latex-builder && docker pull nimamahmoudi/latex-builder && docker run -d -p 80:3000 --name latex-builder --restart always nimamahmoudi/latex-builder
 ```
 
+Or use `docker-compose` along with caddy with automatic tls:
+
+```sh
+sudo apt-get update && sudo apt install -qy python-pip && pip install docker-compose
+# or as root
+# apt-get update && apt install -qy python-pip && pip install docker-compose
+
+docker-compose up -d
+```
+
 ## References
 
 - [CSS Tricks: drag and drop file uploading](https://css-tricks.com/drag-and-drop-file-uploading/)

@@ -1,0 +1,16 @@
+version: '3'
+services:
+  caddy:
+    image: "caddy:latest"
+    command: caddy reverse-proxy --from lb.nima-dev.com --to web:3000
+    volumes:
+      - ./caddydata:/data  # to save certificates on disk
+    ports:
+      - "80:80"
+      - "443:443"
+    depends_on:
+      - web
+
+  web:
+    # build: .
+    image: "nimamahmoudi/latex-builder"

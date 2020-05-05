@@ -10,3 +10,4 @@ Dockerfile
 dockername
 docker-build-push.sh
 .dockerignore
+caddydata
