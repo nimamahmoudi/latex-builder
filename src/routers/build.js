@@ -55,6 +55,7 @@ const buildProcess = function(fileId, sendLogToClient) {
 }
 
 const buildFile = async (fileId, io) => {
+    let folderPath = tmpStorageFolder + fileId + '/';
     let outputPath = tmpStorageFolder + fileId + '/output/';
     let totalLogs = ""
     activeBuilds[fileId] = totalLogs
@@ -62,6 +63,21 @@ const buildFile = async (fileId, io) => {
         totalLogs += newLog
         activeBuilds[fileId] = totalLogs
         io.emit(fileId, newLog)
+    }
+    clearLogs = () => {
+        delete activeBuilds[fileId]
+    }
+
+    if (!fileId.match(/^[\w]+$/)) {
+        sendLogToClient("Bad file name format")
+        clearLogs()
+        return
+    }
+
+    if (!fs.existsSync(folderPath) || !fs.existsSync(folderPath + 'upload.zip')) {
+        sendLogToClient("Requested file doesn't exist")
+        clearLogs()
+        return
     }
 
     sendLogToClient("Build started for: " + fileId + '\n\n')
@@ -79,7 +95,7 @@ const buildFile = async (fileId, io) => {
         })
     }
 
-    delete activeBuilds[fileId]
+    clearLogs()
 }
 
 router.get('/download/:id/:file', async (req, res) => {
