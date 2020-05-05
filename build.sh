@@ -26,7 +26,7 @@ build_docx()
     printf "Building $FOLDER/${FILE_PATH}.docx finished.\n\n"
 }
 
-cd $2 || exit
+cd $2 2>/dev/null || exit
 rm -r content 2>/dev/null
 rm -r output 2>/dev/null
 unzip -qq upload.zip -d content || exit
