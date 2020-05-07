@@ -1,4 +1,4 @@
-FROM node:10
+FROM node:10-slim
 
 # Reference: https://nodejs.org/fr/docs/guides/nodejs-docker-webapp/
 
@@ -9,7 +9,7 @@ ENV DEBIAN_FRONTEND=noninteractive
 # installed required applications
 # Update with latest version of pandoc every once in a while: https://github.com/jgm/pandoc/releases/
 RUN apt-get update \
-    && apt-get install -qy --no-install-recommends tree wget ca-certificates \
+    && apt-get install -qy --no-install-recommends tree zip unzip curl wget ca-certificates \
     && wget -q https://github.com/jgm/pandoc/releases/download/2.9.2.1/pandoc-2.9.2.1-1-amd64.deb -O pandoc-amd64.deb \
     && dpkg -i pandoc-amd64.deb \
     && rm pandoc-amd64.deb\
