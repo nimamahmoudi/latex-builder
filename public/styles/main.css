@@ -137,14 +137,29 @@ main {
     margin-bottom: 3rem;
 }
 
+.site-description {
+    width: 50%;
+    margin: 0 auto 0 auto;
+    font-size: 1.1rem;
+    text-align: center;
+    line-height: 1.8rem;
+}
+
+span.highlight-text {
+    background: #DDDDDD;
+    border-radius: 5px;
+    padding: 0px 4px 0px 4px;
+}
+
 #drop-file-area {
     display: flex;
     justify-content: center;
     align-items: center;
-    border: 2px dashed black;
+    border: 2px dashed #BBBBBB;
+    border-radius: 15px;
     height: 50vh;
-    margin: 0 10% 0 10%;
-    width: 80%;
+    margin: 2rem auto 3rem auto;
+    width: 50%;
     position: relative;
 }
 
