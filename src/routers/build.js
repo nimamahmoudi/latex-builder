@@ -25,19 +25,17 @@ initializeUsingApp = (_app) => {
                 socket.emit(fileId + '/dump', activeBuilds[fileId])
                 return
             } else {
-                buildFile(fileId, io)
+                buildFile(fileId, io, ["build_latex_docx.sh"])
             }
         });
     })
 }
 
-const buildProcess = function(fileId, sendLogToClient) {
+const buildProcess = function(fileId, sendLogToClient, buildScript) {
     let folderPath = tmpStorageFolder + fileId + '/';
-    // let filePath = folderPath + "upload.zip"
 
     const ret = new Promise((resolve, reject) => {
-        // const buildSpawn = spawn("bash", ["src/build.sh", fileId])
-        const buildSpawn = spawn("bash", ["build.sh", fileId, folderPath])
+        const buildSpawn = spawn("bash", ["build_scripts/" + buildScript, fileId, folderPath])
         buildSpawn.stdout.on("data", (data) => {
             sendLogToClient(data.toString())
         });
@@ -56,7 +54,7 @@ const buildProcess = function(fileId, sendLogToClient) {
     return ret
 }
 
-const buildFile = async (fileId, io) => {
+const buildFile = async (fileId, io, build_scripts) => {
     // if an active build exists
     if (activeBuilds.hasOwnProperty(fileId)) {
         return
@@ -89,7 +87,9 @@ const buildFile = async (fileId, io) => {
 
     sendLogToClient("Build started for: " + fileId + '\n\n')
 
-    await buildProcess(fileId, sendLogToClient)
+    for (buildScript of build_scripts) {
+        await buildProcess(fileId, sendLogToClient, buildScript)
+    }
 
     sendLogToClient('\n\n' + 'Build done!' + '\n\n')
 
@@ -105,6 +105,16 @@ const buildFile = async (fileId, io) => {
     clearLogs()
 }
 
+returnGeneratedFile = (res, fileId, filename) => {
+    // return the generated file to user
+    let path = tmpStorageFolder + fileId + '/output/' + filename;
+    if (fs.existsSync(path)) { //file exists
+        fs.createReadStream(path).pipe(res);
+    } else {
+        res.status(404).send("File not found!")
+    }
+}
+
 router.get('/download/:id/:file', async (req, res) => {
     let filename = req.params.file
 
@@ -112,12 +122,7 @@ router.get('/download/:id/:file', async (req, res) => {
         res.status(400).send("Bad file name format")
     }
 
-    let path = tmpStorageFolder + req.params.id + '/output/' + filename;
-    if (fs.existsSync(path)) { //file exists
-        fs.createReadStream(path).pipe(res);
-    } else {
-        res.status(404).send("File not found!")
-    }
+    returnGeneratedFile(res, req.params.id, filename)
 })
 
 router.post('/sync/upload/:file', userFileUpload.single('file'), async (req, res) => {
@@ -130,22 +135,31 @@ router.post('/sync/upload/:file', userFileUpload.single('file'), async (req, res
     // build uploaded file
     const fileId = req.randomFolder
     let io = req.app.io
-    await buildFile(fileId, io)
+    await buildFile(fileId, io, ["build_latex_docx.sh"])
+    
+    returnGeneratedFile(res, fileId, filename)
+})
 
-    // return the generated file to user
-    let path = tmpStorageFolder + fileId + '/output/' + filename;
-    if (fs.existsSync(path)) { //file exists
-        fs.createReadStream(path).pipe(res);
-    } else {
-        res.status(404).send("File not found!")
+router.post('/sync/md/rst/upload/:file', userFileUpload.single('file'), async (req, res) => {
+    // check output file name
+    let filename = req.params.file
+    if (!filename.match(/^[\w.\- ]+\.(rst)$/)) {
+        res.status(400).send("Bad file name format")
     }
+
+    // build uploaded file
+    const fileId = req.randomFolder
+    let io = req.app.io
+    await buildFile(fileId, io, ["build_md_rst.sh"])
+    
+    returnGeneratedFile(res, fileId, filename)
 })
 
 router.get('/logs/:id', async (req, res) => {
     let fileId = req.params.id
     let io = req.app.io
 
-    buildFile(fileId, io)
+    buildFile(fileId, io, ["build_latex_docx.sh"])
 
     res.render('logs', {
         title: 'Building...',

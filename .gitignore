@@ -107,3 +107,4 @@ uploads
 tmp
 dockername
 caddydata
+.vscode
