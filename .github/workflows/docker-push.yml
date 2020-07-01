@@ -15,11 +15,15 @@ jobs:
     steps:
     - uses: actions/checkout@v2
     - name: Docker Build & Push
-      uses: mr-smithers-excellent/docker-build-push@v3.3
+      uses: docker/build-push-action@v1
       with:
-        image: nimamahmoudi/latex-builder
-        directory: ./
-        dockerfile: ./Dockerfile
-        registry: docker.io
         username: ${{ secrets.DOCKER_USERNAME }}
         password: ${{ secrets.DOCKER_PASSWORD }}
+        repository: nimamahmoudi/latex-builder
+        cache_froms: node:10-slim,nimamahmoudi/latex-builder
+        path: ./
+        dockerfile: ./Dockerfile
+        registry: docker.io
+        push: true
+        tag_with_ref: true
+        tag_with_sha: true
