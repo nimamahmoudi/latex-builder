@@ -137,8 +137,29 @@ main {
     margin-bottom: 3rem;
 }
 
-.site-description {
+.main-content {
     width: 50%;
+}
+
+@media only screen and (max-width: 1200px) {
+    .main-content {
+        width: 80%;
+    }
+}
+
+@media only screen and (max-width: 992px) {
+    .main-content {
+        width: 80%;
+    }
+}
+
+@media only screen and (max-width: 768px) {
+    .main-content {
+        width: 100%;
+    }
+}
+
+.site-description {
     margin: 0 auto 0 auto;
     font-size: 1.1rem;
     text-align: center;
@@ -159,7 +180,6 @@ span.highlight-text {
     border-radius: 15px;
     height: 50vh;
     margin: 2rem auto 3rem auto;
-    width: 50%;
     position: relative;
 }
 

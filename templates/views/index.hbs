@@ -5,7 +5,7 @@
   <div id="site-title">
     <h1>{{>page/title}}</h1>
   </div>
-  <div class="site-description">
+  <div class="site-description main-content">
     <p>
       Simply drop a <span class="highlight-text">zip</span> file containing a latex project in the box below.
       The system will convert the contents of <span class="highlight-text">main.tex</span> file to a word
@@ -15,7 +15,7 @@
     </p>
   </div>
   <form class="box" method="post" action="upload" enctype="multipart/form-data">
-    <div id="drop-file-area">
+    <div id="drop-file-area" class="main-content">
       <button id="select-file-text">Select or drop a zip file</button>
       <input id="file-input" class="box__file hiddenfile" type="file" name="file" id="file" />
       <div class="box__uploading">Uploading&hellip;</div>
