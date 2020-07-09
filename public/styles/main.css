@@ -210,6 +210,11 @@ span.highlight-text {
     border-radius: 5px;
 }
 
+#select-file-text:focus {
+    border: 4px solid orange;
+    outline: none;
+}
+
 #select-file-text:hover {
     background-color: orange;
     color: white;

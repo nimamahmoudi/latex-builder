@@ -32,6 +32,16 @@ sudo apt-get update && sudo apt install -qy python-pip && pip install docker-com
 docker-compose up -d
 ```
 
+## Enabling Monitoring
+
+To enable monitoring, set the following environment variables:
+
+```sh
+ELASTIC_APM_SERVICE_NAME=latex-builder-public
+ELASTIC_APM_SECRET_TOKEN=XXXXXXXXXXXXXXX
+ELASTIC_APM_SERVER_URL=https://elasticsearchapm:8200
+```
+
 ## References
 
 - [CSS Tricks: drag and drop file uploading](https://css-tricks.com/drag-and-drop-file-uploading/)

@@ -9,13 +9,19 @@ const { spawn } = require("child_process")
 
 const userFileUpload = util.userFileUpload
 
-var app;
-var io;
-const activeBuilds = {};
+var app
+var io
+const activeBuilds = {}
+var apmEnabled = false
 
 initializeUsingApp = (_app) => {
     app = _app
     io = app.io
+
+    if (app.apm) {
+        apmEnabled = true
+        console.log("APM Enabled!")
+    }
 
     io.on('connection', (socket) => {
         // console.log('new websocket connection')
@@ -31,7 +37,15 @@ initializeUsingApp = (_app) => {
     })
 }
 
-const buildProcess = function(fileId, sendLogToClient, buildScript) {
+const buildProcess = function (fileId, sendLogToClient, buildScript) {
+    // start recording monitoring data
+    if (apmEnabled) {
+        var apmName = 'BuildScript/' + buildScript
+        var apmType = 'job'
+        var apmTrans = app.apm.startTransaction(apmName, apmType)
+        apmTrans.result = 'success'
+    }
+
     let folderPath = tmpStorageFolder + fileId + '/';
 
     const ret = new Promise((resolve, reject) => {
@@ -44,9 +58,16 @@ const buildProcess = function(fileId, sendLogToClient, buildScript) {
         });
         buildSpawn.on('error', (error) => {
             console.log(`error: ${error.message}`);
+            if (apmEnabled) apmTrans.result = 'error'
         });
         buildSpawn.on("close", code => {
             sendLogToClient(`child process exited with code ${code}`)
+            if (apmEnabled) {
+                if (code !== 0) {
+                    apmTrans.result = 'error'
+                }
+                apmTrans.end()
+            }
             resolve()
         });
     })
@@ -136,7 +157,7 @@ router.post('/sync/upload/:file', userFileUpload.single('file'), async (req, res
     const fileId = req.randomFolder
     let io = req.app.io
     await buildFile(fileId, io, ["build_latex_docx.sh"])
-    
+
     returnGeneratedFile(res, fileId, filename)
 })
 
@@ -151,7 +172,7 @@ router.post('/sync/md/rst/upload/:file', userFileUpload.single('file'), async (r
     const fileId = req.randomFolder
     let io = req.app.io
     await buildFile(fileId, io, ["build_md_rst.sh"])
-    
+
     returnGeneratedFile(res, fileId, filename)
 })
 
@@ -167,7 +188,7 @@ router.get('/logs/:id', async (req, res) => {
     })
 })
 
-module.exports = function(app) {
+module.exports = function (app) {
     initializeUsingApp(app)
     return router
 }

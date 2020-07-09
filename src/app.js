@@ -1,3 +1,11 @@
+// Add this to the VERY top of the first file loaded in your app
+if (process.env.ELASTIC_APM_SERVICE_NAME) {
+    var apm = require('elastic-apm-node').start({
+        // uncomment this to show crashes, otherwise it will capture crashed and send to APM
+        captureExceptions: true,
+    })
+}
+
 const path = require('path')
 const http = require('http')
 const express = require('express')
@@ -10,7 +18,8 @@ const app  = express()
 const server = http.createServer(app)
 const io = socketio(server)
 // so that we can access io from req.app.io
-app.io = io;
+app.io = io
+app.apm = apm
 
 const port = process.env.PORT || 3000
 
