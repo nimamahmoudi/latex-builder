@@ -20,6 +20,6 @@ jobs:
         uses: dokku/github-action@master
         with:
           # specify the remote branch to push to
-          branch: 'master'
+          branch: 'main'
           git_remote_url: 'ssh://dokku@dokku.nima-dev.com:3022/latex-builder'
           ssh_private_key: ${{ secrets.SSH_PRIVATE_KEY }}
