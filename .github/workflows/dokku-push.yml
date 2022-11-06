@@ -1,0 +1,24 @@
+name: 'deploy'
+
+# yamllint disable-line rule:truthy
+on:
+  push:
+    branches:
+      - master
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Cloning repo
+        uses: actions/checkout@v2
+        with:
+          fetch-depth: 0
+
+      - name: Push to dokku
+        uses: dokku/github-action@master
+        with:
+          # specify the remote branch to push to
+          branch: 'master'
+          git_remote_url: 'ssh://dokku@dokku.nima-dev.com:3022/latex-builder'
+          ssh_private_key: ${{ secrets.SSH_PRIVATE_KEY }}
